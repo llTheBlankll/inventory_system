@@ -28,11 +28,9 @@ public class Supplier {
     @Column(name = "supplier_other_details", length = 64)
     private String supplierOtherDetails;
 
-
     public Supplier() {
 
     }
-
 
     public Supplier(Integer id, String supplierName, String supplierAddress, String supplierPhone, String supplierFax, String supplierEmail, String supplierOtherDetails, List<Stock> supplierStock) {
         this.id = id;

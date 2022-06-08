@@ -1,5 +1,7 @@
 package com.nytri.inventory_system.entity;
 
+import org.hibernate.mapping.Set;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +20,8 @@ public class Categories {
     @Column(name = "category_description")
     private String categoryDescription;
 
-    @OneToMany(mappedBy = "category")
-    private List<Stock> stockList = new ArrayList<>();
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    private List<Stock> stockSet = new ArrayList<>();
 
     public Categories() {
 
