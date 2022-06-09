@@ -5,7 +5,6 @@ import com.nytri.inventory_system.entity.Stock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ManageStockItems {
@@ -15,24 +14,6 @@ public class ManageStockItems {
 
     public ManageStockItems(List<Stock> allStocks) {
         this.allStocks = allStocks;
-    }
-
-    /*
-    Get Products that has a quantity lower of 'Configuration.low_stock_items'.
-    */
-    public List<Stock> getLowStockItems() {
-        List<Stock> lowStocks = new ArrayList<>();
-
-        // * Check all if the product stock are low.
-        allStocks.forEach(stock -> {
-            int product_quantity = stock.getProductQuantity();
-
-            if (product_quantity <= Configuration.low_stock_items) {
-                lowStocks.add(stock);
-            }
-        });
-
-        return lowStocks;
     }
 
     /*

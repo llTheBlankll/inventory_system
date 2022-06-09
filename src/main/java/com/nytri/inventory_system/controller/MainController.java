@@ -42,8 +42,12 @@ public class MainController {
 
     @GetMapping("/api/stocks/low_stock")
     public List<Stock> getLowStockItems() {
-        ManageStockItems msi = new ManageStockItems(this.stockRepository.findAll());
-        return msi.getLowStockItems();
+        return stockRepository.findAllLowStockItems();
+    }
+
+    @GetMapping("/api/stocks/no_stock")
+    public List<Stock> getNoStockItems() {
+        return stockRepository.findAllNoStockItems();
     }
 
     @PutMapping("/api/stocks/add")
