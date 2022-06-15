@@ -11,5 +11,7 @@ import java.util.List;
 public interface CategoriesRepository extends JpaRepository<Categories, Integer> {
 
     List<Categories> findByCategoryNameContaining(String category_name);
+    List<Categories> findByCategoryDescriptionContaining(String description);
 
+    Categories findByCategoryName(String category_name);
 }

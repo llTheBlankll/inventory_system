@@ -1,39 +1,26 @@
 package com.nytri.inventory_system.entity;
 
-import org.hibernate.mapping.Set;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "category")
 public class Categories {
 
     @Id
-    @Column(name = "category_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id", nullable = false)
     private Integer categoryId;
 
     @Column(name = "category_name")
     private String categoryName;
+
     @Column(name = "category_description")
     private String categoryDescription;
-
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    private List<Stock> stockSet = new ArrayList<>();
 
     public Categories() {
 
     }
 
-    public Categories(Integer categoryId, String categoryName, String categoryDescription, List<Stock> categoryStock) {
-        this.categoryId = categoryId;
-        this.categoryName = categoryName;
-        this.categoryDescription = categoryDescription;
-    }
-
-    public int getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 

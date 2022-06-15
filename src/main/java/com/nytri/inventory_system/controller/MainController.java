@@ -21,7 +21,8 @@ public class MainController {
     private final CategoriesRepository categoriesRepository;
     private final SupplierRepository supplierRepository;
 
-    public MainController(StockRepository stockRepository, CategoriesRepository categoriesRepository,
+    public MainController(StockRepository stockRepository,
+                          CategoriesRepository categoriesRepository,
                           SupplierRepository supplierRepository) {
         this.stockRepository = stockRepository;
         this.categoriesRepository = categoriesRepository;
@@ -72,6 +73,16 @@ public class MainController {
     @GetMapping("/api/categories")
     public List<Categories> showAllCategories() {
         return categoriesRepository.findAll();
+    }
+
+    @GetMapping("/api/categories/by_name")
+    public Categories getCategoryByName(String name) {
+        return this.categoriesRepository.findByCategoryName(name);
+    }
+
+    @GetMapping("/api/categories/by_description")
+    public List<Categories> getCategoryByDescription(String description) {
+        return this.categoriesRepository.findByCategoryDescriptionContaining(description);
     }
 
     @PutMapping("/api/categories/add")
