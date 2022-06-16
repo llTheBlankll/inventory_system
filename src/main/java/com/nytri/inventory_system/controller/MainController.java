@@ -57,8 +57,8 @@ public class MainController {
     }
 
     @DeleteMapping("/api/stocks/delete/{id}")
-    public void deleteStockById(@PathVariable("id") int id) {
-        stockRepository.deleteById(String.valueOf(id));
+    public void deleteStockById(@PathVariable("id") Integer id) {
+        stockRepository.deleteById(id);
     }
 
     @DeleteMapping("/api/stocks/delete")

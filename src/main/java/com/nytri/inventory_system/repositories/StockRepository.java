@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface StockRepository extends JpaRepository<Stock, String> {
+public interface StockRepository extends JpaRepository<Stock, Integer> {
 
     @Query(value = "SELECT * FROM stocks WHERE product_quantity = 0", nativeQuery = true)
     List<Stock> findAllNoStockItems();
