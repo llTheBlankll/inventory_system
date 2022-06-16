@@ -12,4 +12,5 @@ import java.util.List;
 public interface SupplierRepository extends JpaRepository<Supplier, Integer> {
 
     List<Supplier> findBySupplierNameContaining(String category_name);
+    Supplier findBySupplierName(String supplier_name);
 }

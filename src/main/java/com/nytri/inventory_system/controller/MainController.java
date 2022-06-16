@@ -76,12 +76,17 @@ public class MainController {
     }
 
     @GetMapping("/api/categories/by_name")
-    public Categories getCategoryByName(String name) {
+    public Categories getCategoryByName(@RequestParam("name") String name) {
         return this.categoriesRepository.findByCategoryName(name);
     }
 
+    @GetMapping("/api/categories/by_name_containing")
+    public List<Categories> getCategoriesByName(@RequestParam("name") String name) {
+        return this.categoriesRepository.findByCategoryNameContainingIgnoreCase(name);
+    }
+
     @GetMapping("/api/categories/by_description")
-    public List<Categories> getCategoryByDescription(String description) {
+    public List<Categories> getCategoriesByDescription(@RequestParam("description") String description) {
         return this.categoriesRepository.findByCategoryDescriptionContaining(description);
     }
 
@@ -106,6 +111,11 @@ public class MainController {
 
     @GetMapping("/api/suppliers")
     public List<Supplier> showAllSuppliers() { return supplierRepository.findAll(); }
+
+    @GetMapping("/api/suppliers/by_name")
+    public Supplier getSupplierByName(@RequestParam("supplier_name") String supplierName) {
+        return this.supplierRepository.findBySupplierName(supplierName);
+    }
 
     @PutMapping("/api/suppliers/add")
     public void addSupplier(@RequestBody Supplier supplier) {

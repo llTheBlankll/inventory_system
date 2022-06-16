@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface CategoriesRepository extends JpaRepository<Categories, Integer> {
 
-    List<Categories> findByCategoryNameContaining(String category_name);
+    List<Categories> findByCategoryNameContainingIgnoreCase(String category_name);
     List<Categories> findByCategoryDescriptionContaining(String description);
 
     Categories findByCategoryName(String category_name);
