@@ -18,5 +18,10 @@ public interface StockRepository extends JpaRepository<Stock, Integer> {
     @Query(value = "SELECT * FROM stocks WHERE product_quantity <= " + Configuration.low_stock_items_max_row, nativeQuery = true)
     List<Stock> findAllLowStockItems();
 
+    Stock findByProductName(String product_name);
+
     List<Stock> findByProductNameContaining(String product_name);
+
+    @Query(value = "SELECT COUNT(*) FROM stocks", nativeQuery = true)
+    Integer getStocksTotalCount();
 }
