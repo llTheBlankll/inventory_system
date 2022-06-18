@@ -9,10 +9,10 @@ import java.util.List;
 
 public class ManageStockItems {
 
-    private final List<Stock> allStocks;
+    private final Iterable<Stock> allStocks;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public ManageStockItems(List<Stock> allStocks) {
+    public ManageStockItems(Iterable<Stock> allStocks) {
         this.allStocks = allStocks;
     }
 

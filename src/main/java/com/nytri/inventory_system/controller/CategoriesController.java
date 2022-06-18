@@ -3,6 +3,8 @@ package com.nytri.inventory_system.controller;
 
 import com.nytri.inventory_system.entity.Categories;
 import com.nytri.inventory_system.repositories.CategoriesRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.List;
 public class CategoriesController {
 
     private final CategoriesRepository categoriesRepository;
+    private final Logger logger =LoggerFactory.getLogger(this.getClass());
 
     public CategoriesController(CategoriesRepository categoriesRepository) {
         this.categoriesRepository = categoriesRepository;
@@ -20,40 +23,50 @@ public class CategoriesController {
 
     // ! START CATEGORIES METHOD.
 
-    @GetMapping("/api/categories")
+    @GetMapping("/all")
     public List<Categories> showAllCategories() {
-        return categoriesRepository.findAll();
+        return (List<Categories>) categoriesRepository.findAll();
     }
 
-    @GetMapping("/api/categories/by_name")
+    @GetMapping("/by_name")
     public Categories getCategoryByName(@RequestParam("name") String name) {
         return this.categoriesRepository.findByCategoryName(name);
     }
 
     // Get Categories by their name like the value.
-    @GetMapping("/api/categories/by_name_containing")
+    @GetMapping("/by_name_containing")
     public List<Categories> getCategoriesByName(@RequestParam("name") String name) {
         return this.categoriesRepository.findByCategoryNameContainingIgnoreCase(name);
     }
 
     // Get categories by their description like the value.
-    @GetMapping("/api/categories/by_description")
+    @GetMapping("/by_description")
     public List<Categories> getCategoriesByDescription(@RequestParam("description") String description) {
         return this.categoriesRepository.findByCategoryDescriptionContaining(description);
     }
 
-    @PutMapping("/api/categories/add")
-    public void addCategory(@RequestBody Categories category) {
+    @PutMapping("/add")
+    public String addCategory(@RequestBody Categories category) {
+        // Check if the category already exist, if it exists, then notify the user.
+        if (categoriesRepository.findByCategoryName(category.getCategoryName()) != null) {
+            logger.info("Category " + category.getCategoryName() + " already exist.");
+            return "Category " + category.getCategoryName() + " already exist.";
+        }
+
+        logger.info("Category " + category.getCategoryName() + " was saved successfully.");
         categoriesRepository.save(category);
+        return "Category " + category.getCategoryName() + " was saved successfully.";
     }
 
-    @DeleteMapping("/api/categories/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteCategoryById(@PathVariable("id") int id) {
+        logger.warn("Item with an ID of " + id + " was deleted.");
         categoriesRepository.deleteById(id);
     }
 
-    @DeleteMapping("/api/categories/delete")
+    @DeleteMapping("/delete")
     public void deleteCategory(@RequestBody Categories category) {
+        logger.warn("Deleting a category with a name of " + category.getCategoryName());
         categoriesRepository.delete(category);
     }
 

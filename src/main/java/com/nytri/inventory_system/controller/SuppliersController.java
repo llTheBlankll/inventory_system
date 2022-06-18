@@ -2,6 +2,8 @@ package com.nytri.inventory_system.controller;
 
 import com.nytri.inventory_system.entity.Supplier;
 import com.nytri.inventory_system.repositories.SupplierRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.List;
 public class SuppliersController {
 
     private final SupplierRepository supplierRepository;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public SuppliersController(SupplierRepository supplierRepository) {
         this.supplierRepository = supplierRepository;
@@ -19,7 +22,7 @@ public class SuppliersController {
 
     // ! START SUPPLIERS METHOD.
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public List<Supplier> showAllSuppliers() { return supplierRepository.findAll(); }
 
     // Get suppliers by their name containing the specified value.
@@ -45,11 +48,13 @@ public class SuppliersController {
 
     @DeleteMapping("/delete")
     public String deleteSupplier(@RequestBody Supplier supplier) {
-        if (this.supplierRepository.findBySupplierName(supplier.getSupplierName()) != null) {
+        if (this.supplierRepository.findBySupplierName(supplier.getSupplierName()) == null) {
+            logger.info("Supplier " + supplier.getSupplierName() + " doesn't exist so it cannot be deleted.");
             return "Supplier " + supplier.getSupplierName() + " doesn't exist.";
         }
 
         supplierRepository.delete(supplier);
+        logger.warn("Supplier " + supplier.getSupplierName() + " successfully removed!");
         return "Supplier " + supplier.getSupplierName() + " successfully removed!";
     }
 
