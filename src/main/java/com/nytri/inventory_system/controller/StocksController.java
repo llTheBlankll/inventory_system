@@ -9,9 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-
 
 @RestController
 @CrossOrigin
@@ -28,7 +25,12 @@ public class StocksController {
     // ! START STOCK METHODS
     @GetMapping("/all")
     public Iterable<Stock> showAllStocks() {
-        return stockRepository.findAll(PageRequest.of(0, Configuration.stock_pagination_max_row));
+        return stockRepository.findAll();
+    }
+
+    @GetMapping("/all/{page}")
+    public Iterable<Stock> showAllStocksInPage(@PathVariable("page") Integer pageNum) {
+        return stockRepository.findAll(PageRequest.of(pageNum, Configuration.stock_pagination_max_row));
     }
 
     @GetMapping("/getStocksCount")
@@ -37,7 +39,7 @@ public class StocksController {
     }
 
     @GetMapping("/total_value")
-    public double getInventoryValue(HttpServletResponse response) {
+    public double getInventoryValue() {
         ManageStockItems msi = new ManageStockItems(this.stockRepository.findAll());
         return msi.getTotalItemsPrice();
     }
