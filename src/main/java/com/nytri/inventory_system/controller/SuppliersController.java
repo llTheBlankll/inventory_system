@@ -1,9 +1,11 @@
 package com.nytri.inventory_system.controller;
 
+import com.nytri.inventory_system.Configuration;
 import com.nytri.inventory_system.entity.Supplier;
 import com.nytri.inventory_system.repositories.SupplierRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +26,11 @@ public class SuppliersController {
 
     @GetMapping("/all")
     public List<Supplier> showAllSuppliers() { return supplierRepository.findAll(); }
+
+    @GetMapping("/all/{page}")
+    public List<Supplier> showAllSuppliersAtPage(@PathVariable("page") int pageNum) {
+        return supplierRepository.findAll(PageRequest.of(pageNum, Configuration.suppliers_pagination_max_data)).getContent();
+    }
 
     // Get suppliers by their name containing the specified value.
     @GetMapping("/by_name")

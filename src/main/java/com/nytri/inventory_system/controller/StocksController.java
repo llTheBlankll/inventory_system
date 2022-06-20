@@ -30,7 +30,7 @@ public class StocksController {
 
     @GetMapping("/all/{page}")
     public Iterable<Stock> showAllStocksInPage(@PathVariable("page") Integer pageNum) {
-        return stockRepository.findAll(PageRequest.of(pageNum, Configuration.stock_pagination_max_data));
+        return stockRepository.findAll(PageRequest.of(pageNum, Configuration.stock_pagination_max_data)).getContent();
     }
 
     @GetMapping("/getStocksCount")

@@ -1,10 +1,12 @@
 package com.nytri.inventory_system.controller;
 
 
+import com.nytri.inventory_system.Configuration;
 import com.nytri.inventory_system.entity.Categories;
 import com.nytri.inventory_system.repositories.CategoriesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +28,11 @@ public class CategoriesController {
     @GetMapping("/all")
     public List<Categories> showAllCategories() {
         return (List<Categories>) categoriesRepository.findAll();
+    }
+
+    @GetMapping("/all/{page}")
+    public List<Categories> showAllCategoriesAtPage(@PathVariable("page") Integer pageNum) {
+        return categoriesRepository.findAll(PageRequest.of(pageNum, Configuration.categories_pagination_max_data)).getContent();
     }
 
     @GetMapping("/by_name")
