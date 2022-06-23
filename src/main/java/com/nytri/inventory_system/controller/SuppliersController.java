@@ -40,12 +40,26 @@ public class SuppliersController {
 
     @PutMapping("/add")
     public String addSupplier(@RequestBody Supplier supplier) {
+        // Check if the supplier exist, if it is, then return an error.
         if (this.supplierRepository.findBySupplierName(supplier.getSupplierName()) != null) {
             return "Supplier " + supplier.getSupplierName() + " already exist.";
         }
 
         this.supplierRepository.save(supplier);
         return "Supplier " + supplier.getSupplierName() + " was added successfully!";
+    }
+
+    @PutMapping("/update")
+    public String updateSupplier(@RequestBody Supplier supplier) {
+        // Check if the supplier exist, if not, the return an error.
+        if (this.supplierRepository.findBySupplierName(supplier.getSupplierName()) != null) {
+            logger.info("Supplier " + supplier.getSupplierName() + " doesn't exist.");
+            return "Supplier " + supplier.getSupplierName() + " doesn't exist.";
+        }
+
+        this.supplierRepository.save(supplier);
+        logger.info("Supplier " + supplier.getSupplierName() + " was updated successfully!");
+        return "Supplier " + supplier.getSupplierName() + " was updated successfully!";
     }
 
     @DeleteMapping("/delete/{id}")

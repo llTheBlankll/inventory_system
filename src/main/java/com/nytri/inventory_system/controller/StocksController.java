@@ -67,6 +67,20 @@ public class StocksController {
         return "Product " + stock.getProductName() + " was saved successfully!";
     }
 
+    @PutMapping("/update")
+    public String updateStock(@RequestBody Stock stock) {
+        // If the product doesn't exist, return an error.
+        if (this.stockRepository.findByProductName(stock.getProductName()) == null) {
+            logger.info("Product " + stock.getProductName() + " doesn't exist. ");
+            return "Product " + stock.getProductName() + " doesn't exist.";
+        }
+
+        stockRepository.save(stock);
+        logger.info("Product " + stock.getProductName() + " was updated successfully!");
+        return "Product " + stock.getProductName() + " was updated successfully!";
+    }
+
+
     @DeleteMapping("/delete/{id}")
     public void deleteStockById(@PathVariable("id") Integer id) {
         logger.warn("Item with an ID of " + id + " was deleted.");
