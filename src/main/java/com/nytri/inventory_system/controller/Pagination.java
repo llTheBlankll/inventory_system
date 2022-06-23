@@ -12,16 +12,16 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/pagination/numbering")
-public class Paginations {
+@RequestMapping("/api/pagination")
+public class Pagination {
 
   private final StockRepository stockRepository;
   private final CategoriesRepository categoriesRepository;
   private final SupplierRepository supplierRepository;
 
-  public Paginations(StockRepository stockRepository,
-                     SupplierRepository supplierRepository,
-                     CategoriesRepository categoriesRepository) {
+  public Pagination(StockRepository stockRepository,
+                    SupplierRepository supplierRepository,
+                    CategoriesRepository categoriesRepository) {
     this.categoriesRepository = categoriesRepository;
     this.supplierRepository = supplierRepository;
     this.stockRepository = stockRepository;
@@ -29,6 +29,10 @@ public class Paginations {
 
   @GetMapping("/stocks/{page}")
   public List<Integer> getStocksPaginationNumbersIfInPage(@PathVariable("page") Integer pageNum) {
+    if (pageNum < 0) {
+      return List.of(0);
+    }
+
     List<Integer> pagination = new ArrayList<>();
     if (pageNum - 1 >= 0) {
       if (pageNum - 2 >= 0) {
@@ -51,6 +55,10 @@ public class Paginations {
 
   @GetMapping("/categories/{page}")
   public List<Integer> getCategoriesPaginationNumbersIfInPage(@PathVariable("page") Integer pageNum) {
+    if (pageNum < 0) {
+      return List.of(0);
+    }
+
     List<Integer> pagination = new ArrayList<>();
 
     if (pageNum - 1 >= 0) {
@@ -63,7 +71,7 @@ public class Paginations {
     pagination.add(pageNum);
 
     if (categoriesRepository.findAll(PageRequest.of(pageNum + 1, Configuration.categories_pagination_max_data)).hasContent()) {
-      if (categoriesRepository.findAll(PageRequest.of(pageNum + 2, Configuration.stock_pagination_max_data)).hasContent()) {
+      if (categoriesRepository.findAll(PageRequest.of(pageNum + 2, Configuration.categories_pagination_max_data)).hasContent()) {
         pagination.add(pageNum + 2);
       }
 
@@ -75,18 +83,19 @@ public class Paginations {
 
   @GetMapping("/suppliers/{page}")
   public List<Integer> getSuppliersPaginationNumbersIfInPage(@PathVariable("page") Integer pageNum) {
-    List<Integer> pagination = new ArrayList<>();
+    if (pageNum < 0) {
+      return List.of(0);
+    }
 
+    List<Integer> pagination = new ArrayList<>();
     if (pageNum - 1 >= 0) {
       if (pageNum - 2 >= 0) {
-        pagination.add(pageNum + 2);
+        pagination.add(pageNum - 2);
       }
-
-      pagination.add(pageNum + 1);
+      pagination.add(pageNum - 1);
     }
 
     pagination.add(pageNum);
-
     if (supplierRepository.findAll(PageRequest.of(pageNum + 1, Configuration.suppliers_pagination_max_data)).hasContent()) {
       if (supplierRepository.findAll(PageRequest.of(pageNum + 2, Configuration.suppliers_pagination_max_data)).hasContent()) {
         pagination.add(pageNum + 2);
