@@ -75,6 +75,12 @@ public class StocksController {
             return "Product " + stock.getProductName() + " doesn't exist.";
         }
 
+        // Check if the product already exist.
+        if (this.stockRepository.findByProductName(stock.getProductName()) != null) {
+            logger.info("Product " + stock.getProductName() + " already exist.");
+            return "Product already exists";
+        }
+
         stockRepository.save(stock);
         logger.info("Product " + stock.getProductName() + " was updated successfully!");
         return "Product " + stock.getProductName() + " was updated successfully!";
